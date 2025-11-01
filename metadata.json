@@ -1,0 +1,5 @@
+{
+  "name": "Neovid Inspect Price Calculator",
+  "description": "An application to calculate estimated prices for sewer cleaning and video inspection services offered by Neovid Inspect.",
+  "requestFramePermissions": []
+}
