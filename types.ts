@@ -17,6 +17,7 @@ export interface LegalEntitySubOption {
   category: 'cleaning' | 'inspection' | 'report' | 'other_fixed';
   price?: number; // for fixed type
   multiplier?: number; // for per_meter type
+  description?: string; // Tooltip text
 }
 
 export interface LegalEntityOption {

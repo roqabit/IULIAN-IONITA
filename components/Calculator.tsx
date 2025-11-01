@@ -2,7 +2,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { ServiceType, CustomerType } from '../types';
 import { PRICING, MAX_LENGTH, MAX_DISTANCE } from '../constants';
-import { CleaningIcon, InspectionIcon, BothIcon, SettingsIcon, UserIcon, BuildingIcon, WhatsAppIcon } from './icons';
+import { CleaningIcon, InspectionIcon, BothIcon, SettingsIcon, UserIcon, BuildingIcon, WhatsAppIcon, InfoIcon } from './icons';
 
 interface PriceDetails {
   travelCost: number;
@@ -38,7 +38,7 @@ const ServiceButton: React.FC<{
 
 const Calculator: React.FC = () => {
   const [service, setService] = useState<ServiceType>(ServiceType.Cleaning);
-  const [customerType, setCustomerType] = useState<CustomerType>(CustomerType.Physical);
+  const [customerType, setCustomerType] = useState<CustomerType>(CustomerType.Legal);
   const [length, setLength] = useState<number>(20);
   const [diameterMultiplier, setDiameterMultiplier] = useState<number>(PRICING.DIAMETER_OPTIONS[0].value);
   const [materialMultiplier, setMaterialMultiplier] = useState<number>(PRICING.MATERIAL_OPTIONS[0].value);
@@ -243,16 +243,16 @@ const Calculator: React.FC = () => {
           <label className="block text-lg font-medium mb-3 text-slate-300">Tip Client</label>
           <div className="flex flex-col sm:flex-row gap-3">
             <ServiceButton 
-              label="Persoană Fizică" 
-              icon={<UserIcon className="w-6 h-6" />}
-              isActive={customerType === CustomerType.Physical} 
-              onClick={() => setCustomerType(CustomerType.Physical)} 
-            />
-            <ServiceButton 
               label="Persoană Juridică" 
               icon={<BuildingIcon className="w-6 h-6" />}
               isActive={customerType === CustomerType.Legal} 
               onClick={() => setCustomerType(CustomerType.Legal)} 
+            />
+            <ServiceButton 
+              label="Persoană Fizică" 
+              icon={<UserIcon className="w-6 h-6" />}
+              isActive={customerType === CustomerType.Physical} 
+              onClick={() => setCustomerType(CustomerType.Physical)} 
             />
           </div>
         </div>
@@ -327,9 +327,18 @@ const Calculator: React.FC = () => {
                                     id={subOpt.id}
                                     checked={selectedSubOptions[subOpt.id] || false}
                                     onChange={handleSubOptionChange}
-                                    className="h-5 w-5 rounded border-slate-500 text-orange-600 focus:ring-orange-500 bg-slate-800"
+                                    className="h-5 w-5 rounded border-slate-500 text-orange-600 focus:ring-orange-500 bg-slate-800 flex-shrink-0"
                                 />
-                                <span className="ml-3 text-slate-200">{subOpt.label}</span>
+                                <span className="ml-3 text-slate-200 flex-grow">{subOpt.label}</span>
+                                {subOpt.description && (
+                                    <div className="relative group flex items-center ml-auto pl-2 flex-shrink-0">
+                                        <InfoIcon className="w-5 h-5 text-slate-400 group-hover:text-orange-400 transition-colors" />
+                                        <div className="absolute bottom-full mb-2 w-64 p-3 bg-slate-900 border border-slate-700 text-white text-xs rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-10 left-1/2 -translate-x-1/2">
+                                            {subOpt.description}
+                                            <div className="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-slate-900"></div>
+                                        </div>
+                                    </div>
+                                )}
                             </label>
                         ))}
                     </div>
@@ -374,8 +383,17 @@ const Calculator: React.FC = () => {
                 </div>
             </div>
             <div>
-                <label htmlFor="distance-slider" className="block text-lg font-medium mb-3 text-slate-300">Distanța: <span className="font-bold text-orange-400">{distance} km</span></label>
-                <input id="distance-slider" type="range" min="0" max={MAX_DISTANCE} value={distance} onChange={(e) => setDistance(Number(e.target.value))} className="w-full h-3 bg-slate-700 rounded-lg appearance-none cursor-pointer range-lg accent-orange-500" />
+                <label htmlFor="distance-input" className="block text-lg font-medium mb-3 text-slate-300">Distanța (km)</label>
+                <input
+                    id="distance-input"
+                    type="number"
+                    min="0"
+                    max={MAX_DISTANCE}
+                    value={distance}
+                    onChange={(e) => setDistance(Number(e.target.value))}
+                    className="w-full p-3 bg-slate-700 border border-slate-600 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none"
+                    placeholder="ex: 15"
+                />
                 <p className="text-xs text-slate-500 mt-2">Calculați distanța de la Mogoșoaia, Str. Livezilor folosind Google Maps.</p>
             </div>
         </div>
