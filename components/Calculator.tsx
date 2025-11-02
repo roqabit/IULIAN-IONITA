@@ -16,6 +16,10 @@ interface PriceDetails {
   fixedCosts: { label: string, price: number }[];
 }
 
+interface CalculatorProps {
+  isEditorMode?: boolean; // New prop to control editor-specific features
+}
+
 const ServiceButton: React.FC<{
   label: string;
   icon: React.ReactNode;
@@ -36,7 +40,7 @@ const ServiceButton: React.FC<{
   );
 };
 
-const Calculator: React.FC = () => {
+const Calculator: React.FC<CalculatorProps> = ({ isEditorMode = false }) => { // Default to false
   const [service, setService] = useState<ServiceType>(ServiceType.Cleaning);
   const [customerType, setCustomerType] = useState<CustomerType>(CustomerType.Legal);
   const [length, setLength] = useState<number>(20);
@@ -409,24 +413,27 @@ const Calculator: React.FC = () => {
             </label>
         </div>
 
-        <div className="border-t border-slate-700 pt-6">
-            <button onClick={() => setShowPriceEditor(!showPriceEditor)} className="flex items-center gap-2 text-slate-400 hover:text-orange-400 transition-colors w-full">
-                <SettingsIcon className="w-5 h-5" />
-                <span className="font-medium">Ajustare Prețuri</span>
-            </button>
-            {showPriceEditor && (
-                <div className="mt-4 grid grid-cols-2 gap-4">
-                    <div>
-                        <label htmlFor="cleaning-price" className="block text-sm font-medium text-slate-300 mb-1">Preț Curățare / metru</label>
-                        <input type="number" id="cleaning-price" value={cleaningPricePerMeter} onChange={(e) => setCleaningPricePerMeter(Number(e.target.value))} className="w-full p-2 bg-slate-700 border border-slate-600 rounded-lg focus:ring-1 focus:ring-orange-500 focus:border-orange-500 outline-none" />
-                    </div>
-                    <div>
-                        <label htmlFor="inspection-price" className="block text-sm font-medium text-slate-300 mb-1">Preț Inspecție / metru</label>
-                        <input type="number" id="inspection-price" value={inspectionPricePerMeter} onChange={(e) => setInspectionPricePerMeter(Number(e.target.value))} className="w-full p-2 bg-slate-700 border border-slate-600 rounded-lg focus:ring-1 focus:ring-orange-500 focus:border-orange-500 outline-none" />
-                    </div>
-                </div>
-            )}
-        </div>
+        {/* Price Adjustment section - only visible in editor mode */}
+        {isEditorMode && (
+          <div className="border-t border-slate-700 pt-6">
+              <button onClick={() => setShowPriceEditor(!showPriceEditor)} className="flex items-center gap-2 text-slate-400 hover:text-orange-400 transition-colors w-full">
+                  <SettingsIcon className="w-5 h-5" />
+                  <span className="font-medium">Ajustare Prețuri</span>
+              </button>
+              {showPriceEditor && (
+                  <div className="mt-4 grid grid-cols-2 gap-4">
+                      <div>
+                          <label htmlFor="cleaning-price" className="block text-sm font-medium text-slate-300 mb-1">Preț Curățare / metru</label>
+                          <input type="number" id="cleaning-price" value={cleaningPricePerMeter} onChange={(e) => setCleaningPricePerMeter(Number(e.target.value))} className="w-full p-2 bg-slate-700 border border-slate-600 rounded-lg focus:ring-1 focus:ring-orange-500 focus:border-orange-500 outline-none" />
+                      </div>
+                      <div>
+                          <label htmlFor="inspection-price" className="block text-sm font-medium text-slate-300 mb-1">Preț Inspecție / metru</label>
+                          <input type="number" id="inspection-price" value={inspectionPricePerMeter} onChange={(e) => setInspectionPricePerMeter(Number(e.target.value))} className="w-full p-2 bg-slate-700 border border-slate-600 rounded-lg focus:ring-1 focus:ring-orange-500 focus:border-orange-500 outline-none" />
+                      </div>
+                  </div>
+              )}
+          </div>
+        )}
       </div>
 
       {/* --- RESULTS --- */}
