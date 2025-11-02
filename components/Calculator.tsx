@@ -471,6 +471,9 @@ const Calculator: React.FC<CalculatorProps> = ({ isEditorMode = false }) => { //
             <p className="text-xs text-slate-500 mt-4 text-center">
                 *Acesta este un preț estimativ. TVA-ul nu este inclus. Pentru o ofertă exactă, vă rugăm să ne contactați.
             </p>
+            <p className="text-xs text-slate-500 mt-1 text-center">
+                Prin utilizarea acestui calculator, îți exprimi acordul pentru prelucrarea datelor personale, conform politicii GDPR și regulilor interne de confidențialitate.
+            </p>
         </div>
       </div>
     </div>
