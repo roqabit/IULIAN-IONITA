@@ -1,22 +1,14 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import Calculator from './components/Calculator';
-import { PhoneIcon } from './components/icons';
+import { PhoneIcon, SettingsIcon } from './components/icons';
 
-// FIX: Removed the truckImageBase64 variable as the image is no longer used.
-
-// FIX: Corrected the type annotation for the functional component from `React.-FC` to `React.FC`.
 const App: React.FC = () => {
+  const [showEditorSettings, setShowEditorSettings] = useState<boolean>(false);
+
   return (
     <div className="min-h-screen text-white flex flex-col items-center p-4">
-      <header className="w-full max-w-5xl flex flex-col md:flex-row items-center justify-center text-center gap-8 mb-8">
-        {/* Image - hidden on small screens (REMOVED) */}
-        {/*
-        <div className="hidden md:block flex-shrink-0">
-            <img src={truckImageBase64} alt="Neovid Super 2000 Truck" className="w-64 lg:w-80 h-auto object-contain" />
-        </div>
-        */}
-        
+      <header className="w-full max-w-5xl flex flex-col md:flex-row items-center justify-center text-center gap-8 mb-8 relative">
         {/* Title & Contact */}
         <div className="text-center">
             <h1 className="font-anton text-6xl md:text-7xl tracking-wider">
@@ -32,11 +24,19 @@ const App: React.FC = () => {
               </a>
             </div>
         </div>
+
+        {/* Editor Mode Toggle Button */}
+        <button
+          onClick={() => setShowEditorSettings(!showEditorSettings)}
+          className="absolute top-0 right-0 p-2 rounded-full bg-slate-700/50 hover:bg-slate-600/70 transition-colors duration-300 z-10"
+          aria-label="Toggle editor mode"
+        >
+          <SettingsIcon className={`w-6 h-6 ${showEditorSettings ? 'text-orange-400' : 'text-slate-400'}`} />
+        </button>
       </header>
 
       <main className="w-full max-w-4xl">
-        {/* Added isEditorMode prop to control visibility of price adjustment */}
-        <Calculator isEditorMode={false} />
+        <Calculator isEditorMode={showEditorSettings} />
       </main>
 
       <footer className="text-center mt-12 text-slate-400">
